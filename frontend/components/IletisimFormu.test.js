@@ -53,8 +53,56 @@ test('geçersiz bir mail girildiğinde "email geçerli bir email adresi olmalıd
   expect(error).toHaveTextContent("email geçerli bir email adresi olmalıdır.");
 });
 
-test('soyad girilmeden gönderilirse "soyad gereklidir." mesajı render ediliyor', async () => {});
+test('soyad girilmeden gönderilirse "soyad gereklidir." mesajı render ediliyor', async () => {
+  render(<IletisimFormu />);
+  const name = screen.getByPlaceholderText("İlhan");
+  userEvent.type(name, "Logan");
+  const email = screen.getByPlaceholderText("yüzyılıngolcüsü@hotmail.com");
+  userEvent.type(email, "logan@royco.com");
+  const button = screen.getByTestId("button");
+  userEvent.click(button);
+  const error = await screen.findByTestId("error");
+  expect(error).toHaveTextContent("soyad gereklidir.");
+});
 
-test("ad,soyad, email render ediliyor. mesaj bölümü doldurulmadığında hata mesajı render edilmiyor.", async () => {});
-
-test("form gönderildiğinde girilen tüm değerler render ediliyor.", async () => {});
+test("ad,soyad, email render ediliyor. mesaj bölümü doldurulmadığında hata mesajı render edilmiyor.", async () => {
+  render(<IletisimFormu />);
+  const name = screen.getByPlaceholderText("İlhan");
+  expect(name).toBeInTheDocument();
+  userEvent.type(name, "Logan");
+  const soyad = screen.getByPlaceholderText("Mansız");
+  expect(soyad).toBeInTheDocument();
+  userEvent.type(soyad, "Roy");
+  const email = screen.getByPlaceholderText("yüzyılıngolcüsü@hotmail.com");
+  expect(email).toBeInTheDocument();
+  userEvent.type(email, "logan@royco.com");
+  const error = await screen.findByTestId("error");
+  expect(error).not.toBeInTheDocument();
+});
+const testid = [
+  "firstnameDisplay",
+  "lastnameDisplay",
+  "emailDisplay",
+  "messageDisplay",
+];
+const info = ["logan", "roy", "logan@royco.com", "you are not serious people"];
+test("form gönderildiğinde girilen tüm değerler render ediliyor.", async () => {
+  render(<IletisimFormu />);
+  userEvent.type(screen.getByPlaceholderText("İlhan"), info[0]);
+  userEvent.type(screen.getByPlaceholderText("Mansız"), info[1]);
+  userEvent.type(
+    screen.getByPlaceholderText("yüzyılıngolcüsü@hotmail.com"),
+    info[2]
+  );
+  userEvent.type(screen.getByTestId("message"), info[3]);
+  const button = screen.getByTestId("button");
+  userEvent.click(button);
+  const firstName = await screen.findByTestId(testid[0]);
+  expect(firstName).toBeInTheDocument();
+  const lastName = await screen.findByTestId(testid[1]);
+  expect(lastName).toBeInTheDocument();
+  const email = await screen.findByTestId(testid[2]);
+  expect(email).toBeInTheDocument();
+  const message = await screen.findByTestId(testid[3]);
+  expect(message).toBeInTheDocument();
+});

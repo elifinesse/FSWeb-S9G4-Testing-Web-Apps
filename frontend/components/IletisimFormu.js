@@ -113,6 +113,7 @@ const IletisimFormu = () => {
         <div>
           <label htmlFor="mesaj">Mesaj</label>
           <input
+            data-testid="message"
             onChange={handleChange}
             name="mesaj"
             id="mesaj"
