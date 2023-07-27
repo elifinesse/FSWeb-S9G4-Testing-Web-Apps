@@ -69,15 +69,18 @@ test("ad,soyad, email render ediliyor. mesaj bölümü doldurulmadığında hata
   render(<IletisimFormu />);
   const name = screen.getByPlaceholderText("İlhan");
   expect(name).toBeInTheDocument();
-  userEvent.type(name, "Logan");
+  userEvent.type(name, "hello!!");
   const soyad = screen.getByPlaceholderText("Mansız");
   expect(soyad).toBeInTheDocument();
-  userEvent.type(soyad, "Roy");
+  userEvent.type(soyad, "hi!");
   const email = screen.getByPlaceholderText("yüzyılıngolcüsü@hotmail.com");
   expect(email).toBeInTheDocument();
-  userEvent.type(email, "logan@royco.com");
-  const error = await screen.findByTestId("error");
-  expect(error).not.toBeInTheDocument();
+  userEvent.type(email, "h@gm.com");
+  /* const errors = await screen.findAllByTestId("error");
+  expect(errors).toHaveLength(0); */
+  await waitFor(() => {
+    expect(screen.queryAllByTestId("error")).toHaveLength(0);
+  });
 });
 const testid = [
   "firstnameDisplay",
