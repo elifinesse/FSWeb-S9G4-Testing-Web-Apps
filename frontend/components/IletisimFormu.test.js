@@ -102,10 +102,14 @@ test("form gönderildiğinde girilen tüm değerler render ediliyor.", async () 
   userEvent.click(button);
   const firstName = await screen.findByTestId(testid[0]);
   expect(firstName).toBeInTheDocument();
+  expect(firstName).toHaveTextContent(info[0]);
   const lastName = await screen.findByTestId(testid[1]);
   expect(lastName).toBeInTheDocument();
+  expect(lastName).toHaveTextContent(info[1]);
   const email = await screen.findByTestId(testid[2]);
   expect(email).toBeInTheDocument();
+  expect(email).toHaveTextContent(info[2]);
   const message = await screen.findByTestId(testid[3]);
   expect(message).toBeInTheDocument();
+  expect(message).toHaveTextContent(info[3]);
 });
