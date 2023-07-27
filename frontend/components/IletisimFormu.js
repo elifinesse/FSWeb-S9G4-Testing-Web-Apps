@@ -123,7 +123,7 @@ const IletisimFormu = () => {
 
         {displayData && <Goruntule form={form} />}
 
-        <button>Gönder</button>
+        <button data-testid="button">Gönder</button>
       </form>
     </div>
   );
